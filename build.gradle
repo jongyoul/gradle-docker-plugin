@@ -1,0 +1,80 @@
+plugins {
+    id 'idea'
+    id 'groovy'
+    id 'java-gradle-plugin'
+    id 'com.gradle.plugin-publish' version '0.10.1'
+}
+
+ext {
+    junit5Version = '5.5.2'
+    dockerJavaVersion = "3.1.5"
+}
+
+group 'net.madeng.docker'
+version '0.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+pluginBundle {
+    website = 'https://github.com/jongyoul/gradle-docker-plugin'
+    vcsUrl = 'https://github.com/jongyoul/gradle-docker-plugin'
+    tags = ['docker']
+}
+
+gradlePlugin {
+    plugins {
+        dockerPlugin {
+            id = "${project.group}"
+            displayName = 'Docker Plugin'
+            description = 'Launch docker image with simple setting'
+            implementationClass = 'net.madeng.docker.DockerPlugin'
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+// For testing
+// Write the plugin's classpath to a file to share with the tests
+task createClasspathManifest {
+    def outputDir = file("$buildDir/$name")
+
+    inputs.files(sourceSets.main.runtimeClasspath)
+            .withPropertyName("runtimeClasspath")
+            .withNormalizer(ClasspathNormalizer)
+    outputs.dir(outputDir)
+            .withPropertyName("outputDir")
+
+    doLast {
+        outputDir.mkdirs()
+        file("$outputDir/plugin-classpath.txt").text = sourceSets.main.runtimeClasspath.join("\n")
+    }
+}
+
+dependencies {
+    implementation "com.github.docker-java:docker-java:${dockerJavaVersion}"
+
+    testImplementation gradleTestKit()
+    testImplementation("org.spockframework:spock-core:1.3-groovy-2.4") {
+        exclude module: 'groovy-all'
+    }
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junit5Version}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junit5Version}"
+    testRuntimeOnly "org.junit.vintage:junit-vintage-engine:${junit5Version}"
+    // Add the classpath file to the test runtime classpath
+    testRuntimeOnly files(createClasspathManifest)
+}
+
+test {
+    dependsOn jar
+    environment(
+            "PLUGIN_ID": "${project.group}",
+            "PLUGIN_ARTIFACT": "${rootProject.name}",
+    )
+    useJUnitPlatform()
+    testLogging {
+        events "PASSED", "FAILED", "SKIPPED"//, "STANDARD_OUT", "STANDARD_ERROR"
+    }
+}
