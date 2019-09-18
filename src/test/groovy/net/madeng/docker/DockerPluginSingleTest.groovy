@@ -161,6 +161,10 @@ class DockerPluginSingleTest extends DockerPluginTestSpecification {
     """
 
     when:
+    def tempFile = Paths.get(tempDir, 'foo')
+    if (Files.exists(tempFile)) {
+      Files.delete(tempFile)
+    }
     def result = GradleRunner.create()
         .withProjectDir(testProjectDir.root)
         .withPluginClasspath(pluginClasspath)
@@ -175,7 +179,6 @@ class DockerPluginSingleTest extends DockerPluginTestSpecification {
 
     then:
     Files.exists(Paths.get(tempDir, 'foo'))
-    Files.delete(Paths.get(tempDir, 'foo'))
   }
 
 }
