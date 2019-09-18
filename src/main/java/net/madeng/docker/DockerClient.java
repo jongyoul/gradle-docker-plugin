@@ -34,7 +34,7 @@ public class DockerClient {
     this.dockerClient = dockerClient;
   }
 
-  /** `synchronized` ........... */
+  /* `synchronized` ........... */
   public static synchronized DockerClient getDockerClient(DockerClientConfig dockerClientConfig) {
     return dockerClientMap.getOrDefault(
         dockerClientConfig,

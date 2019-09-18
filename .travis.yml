@@ -4,6 +4,9 @@ install: true
 os: linux
 dist: xenial
 
+env:
+  - CODECOV_TOKEN="68551ba4-b30d-47c5-ab44-84aac97de216"
+
 jdk:
   - openjdk8
 
@@ -11,7 +14,10 @@ services:
   - docker
 
 script:
-  - ./gradlew clean build
+  - ./gradlew clean build jacocoTestReport
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
 
 before_cache:
   - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
