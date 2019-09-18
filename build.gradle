@@ -2,6 +2,7 @@ plugins {
     id 'idea'
     id 'groovy'
     id 'java-gradle-plugin'
+    id 'com.gradle.build-scan' version '2.4.2'
     id 'com.gradle.plugin-publish' version '0.10.1'
 }
 
@@ -77,4 +78,11 @@ test {
     testLogging {
         events "PASSED", "FAILED", "SKIPPED"//, "STANDARD_OUT", "STANDARD_ERROR"
     }
+}
+
+buildScan {
+    termsOfServiceUrl = 'https://gradle.com/terms-of-service'
+    termsOfServiceAgree = 'yes'
+
+    publishOnFailure()
 }
