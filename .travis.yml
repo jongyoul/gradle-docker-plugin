@@ -2,10 +2,10 @@ language: java
 install: true
 
 os: linux
-dist: bionic
+dist: xenial
 
 jdk:
-  - oraclejdk8
+  - openjdk8
 
 services:
   - docker
