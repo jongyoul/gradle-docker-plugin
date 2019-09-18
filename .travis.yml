@@ -3,7 +3,12 @@ install: true
 
 os: linux
 dist: bionic
-jdk: openjdk8
+
+jdk:
+  - oraclejdk8
+
+services:
+  - docker
 
 script:
   - ./gradlew clean test
