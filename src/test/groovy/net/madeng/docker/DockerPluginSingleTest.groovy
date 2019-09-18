@@ -144,6 +144,10 @@ class DockerPluginSingleTest extends DockerPluginTestSpecification {
 
   def 'Map Volumes'() {
     given:
+    def tempDir = System.getProperty('java.io.tmpdir')
+    if (tempDir.startsWith('/var') && System.getProperty('os.name').toLowerCase().contains('mac')) {
+      tempDir = '/private' + tempDir
+    }
     settingsFile << baseSettingScript
     buildFile << baseBuildScript
     buildFile << """
@@ -151,7 +155,7 @@ class DockerPluginSingleTest extends DockerPluginTestSpecification {
           image = 'nginx:latest'
           name = 'nginx-test'
           volumes (
-            '/test-volume': '/tmp'
+            '/test-volume': '${tempDir}'
           )
         }
     """
@@ -170,8 +174,8 @@ class DockerPluginSingleTest extends DockerPluginTestSpecification {
     dockerClient.getDockerClient().execStartCmd(execCreateCmdResponse.getId()).exec(execStartResultCallback).awaitCompletion()
 
     then:
-    Files.exists(Paths.get('/tmp', 'foo'))
-    Files.delete(Paths.get('/tmp', 'foo'))
+    Files.exists(Paths.get(tempDir, 'foo'))
+    Files.delete(Paths.get(tempDir, 'foo'))
   }
 
 }
