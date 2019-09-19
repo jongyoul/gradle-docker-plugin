@@ -78,6 +78,7 @@ test {
   testLogging {
     events "PASSED", "FAILED", "SKIPPED"
   }
+  enabled = false
 }
 
 jacocoTestReport {
