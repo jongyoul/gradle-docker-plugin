@@ -67,12 +67,12 @@ public class DockerClient {
             .map(
                 e ->
                     new PortBinding(
-                        Ports.Binding.bindPort(Integer.parseInt(e.getValue())),
-                        ExposedPort.tcp(Integer.parseInt(e.getKey()))))
+                        Ports.Binding.bindPort(Integer.parseInt(e.getKey())),
+                        ExposedPort.tcp(Integer.parseInt(e.getValue()))))
             .collect(Collectors.toList());
     List<Bind> volumeBinds =
         Optional.ofNullable(volumes).orElse(new HashMap<>()).entrySet().stream()
-            .map(e -> new Bind(e.getValue(), new Volume(e.getKey())))
+            .map(e -> new Bind(e.getKey(), new Volume(e.getValue())))
             .collect(Collectors.toList());
 
     PullImageResultCallback callback = new PullImageResultCallback();

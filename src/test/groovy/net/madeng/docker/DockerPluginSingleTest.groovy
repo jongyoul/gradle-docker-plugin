@@ -123,8 +123,8 @@ class DockerPluginSingleTest extends DockerPluginTestSpecification {
           image = 'nginx:latest'
           name = 'nginx-test'
           ports (
-            '80': '10080',
-            '443': '10443'
+            '10080': '80',
+            '10443': '443'
           )
         }
     """
@@ -138,8 +138,8 @@ class DockerPluginSingleTest extends DockerPluginTestSpecification {
     def container = dockerClient.getContainer('nginx-test')
 
     then:
-    container.ports.collect { it.privatePort.toString() }.contains('80')
-    container.ports.collect { it.privatePort.toString() }.contains('443')
+    container.ports.collect { it.publicPort.toString() }.contains('10080')
+    container.ports.collect { it.publicPort.toString() }.contains('10443')
   }
 
   def 'Map Volumes'() {
@@ -155,7 +155,7 @@ class DockerPluginSingleTest extends DockerPluginTestSpecification {
           image = 'nginx:latest'
           name = 'nginx-test'
           volumes (
-            '/test-volume': '${tempDir}'
+            '${tempDir}': '/test-volume' 
           )
         }
     """
