@@ -13,7 +13,7 @@ ext {
 }
 
 group 'net.madeng.docker'
-version '0.1'
+version '0.2'
 
 sourceCompatibility = 1.8
 
@@ -21,12 +21,19 @@ pluginBundle {
   website = 'https://github.com/jongyoul/gradle-docker-plugin'
   vcsUrl = 'https://github.com/jongyoul/gradle-docker-plugin'
   tags = ['docker']
+
+  // To prevent from adding the prefix of 'gradle.plugin' in front of groupId
+  /*mavenCoordinates {
+    groupId = "${project.group}"
+    artifactId = "${rootProject.name}"
+    version = "${project.version}"
+  }*/
 }
 
 gradlePlugin {
   plugins {
     dockerPlugin {
-      id = "${project.group}"
+      id = "net.madeng.docker"
       displayName = 'Docker Plugin'
       description = 'Launch docker image with simple setting'
       implementationClass = 'net.madeng.docker.DockerPlugin'
