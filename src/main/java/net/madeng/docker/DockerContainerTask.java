@@ -74,7 +74,8 @@ public class DockerContainerTask extends DefaultTask {
               containerExtension.getName(),
               containerExtension.getEnvs(),
               containerExtension.getPorts(),
-              containerExtension.getVolumes());
+              containerExtension.getVolumes(),
+              containerExtension.isRestart());
     }
   }
 

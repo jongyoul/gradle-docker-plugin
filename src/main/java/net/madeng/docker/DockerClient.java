@@ -59,8 +59,13 @@ public class DockerClient {
       String name,
       Map<String, String> envs,
       Map<String, String> ports,
-      Map<String, String> volumes)
+      Map<String, String> volumes,
+      boolean restart)
       throws InterruptedException {
+
+    if(restart) {
+      stopContainer(name);
+    }
 
     List<PortBinding> portBindings =
         Optional.ofNullable(ports).orElse(new HashMap<>()).entrySet().stream()
@@ -101,7 +106,7 @@ public class DockerClient {
     if (null != container) {
       String containerId = container.getId();
       dockerClient.stopContainerCmd(containerId).exec();
-      dockerClient.removeContainerCmd(containerId).exec();
+      dockerClient.removeContainerCmd(containerId).withForce(true).exec();
     } else {
       logger.info("No container name of [{}] is running", name);
     }

@@ -70,7 +70,7 @@ class DockerPluginSingleTest extends DockerPluginTestSpecification {
     """
 
     when:
-    dockerClient.startContainer('nginx:latest', 'nginx-test', null, null, null);
+    dockerClient.startContainer('nginx:latest', 'nginx-test', null, null, null, true)
     def before = null != dockerClient.getContainer('nginx-test')
     def result = GradleRunner.create()
         .withProjectDir(testProjectDir.root)
@@ -82,6 +82,42 @@ class DockerPluginSingleTest extends DockerPluginTestSpecification {
 
     then:
     before && after
+  }
+
+  def 'Start twice'() {
+    given:
+    settingsFile << baseSettingScript
+    buildFile << baseBuildScript
+    buildFile << """
+        container {
+          image = 'nginx:latest'
+          name = 'nginx-test'
+          ports (
+            '80': '10080',
+            '443': '10443'
+          )
+        }
+    """
+    when:
+    def before = null == dockerClient.getContainer('nginx-test')
+    GradleRunner.create()
+        .withProjectDir(testProjectDir.root)
+        .withPluginClasspath(pluginClasspath)
+        .withArguments(DockerPlugin.START_DOCKER_CONTAINER_TASK_NAME)
+        .build()
+    def container1 = dockerClient.getContainer('nginx-test')
+    GradleRunner.create()
+        .withProjectDir(testProjectDir.root)
+        .withPluginClasspath(pluginClasspath)
+        .withArguments(DockerPlugin.START_DOCKER_CONTAINER_TASK_NAME)
+        .build()
+    def container2 = dockerClient.getContainer('nginx-test')
+
+    then:
+    before
+    null != container1
+    null != container2
+    container1.id != container2.id
   }
 
   def 'Map envs'() {

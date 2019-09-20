@@ -3,9 +3,7 @@ package net.madeng.docker;
 import static net.madeng.docker.TypeUtil.makeString;
 import static net.madeng.docker.TypeUtil.makeStringMap;
 
-import groovy.lang.GString;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class ContainerExtension {
   private Object image;
@@ -13,6 +11,7 @@ public class ContainerExtension {
   private Map<Object, Object> envs;
   private Map<Object, Object> ports;
   private Map<Object, Object> volumes;
+  private boolean restart = true;
 
   public String getImage() {
     return makeString(image);
@@ -54,23 +53,29 @@ public class ContainerExtension {
     this.volumes = volumes;
   }
 
+  public boolean isRestart() {
+    return restart;
+  }
 
+  public void setRestart(boolean restart) {
+    this.restart = restart;
+  }
 
   @Override
   public String toString() {
     return "ContainerExtension{"
-        + "image='"
+        + "image="
         + image
-        + '\''
-        + ", name='"
+        + ", name="
         + name
-        + '\''
         + ", envs="
         + envs
         + ", ports="
         + ports
         + ", volumes="
         + volumes
+        + ", restart="
+        + restart
         + '}';
   }
 }
