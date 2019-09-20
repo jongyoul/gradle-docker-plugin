@@ -13,9 +13,20 @@ ext {
 }
 
 group 'net.madeng.docker'
-version '0.2'
+version '0.3-SNAPSHOT'
 
 sourceCompatibility = 1.8
+
+sourceSets {
+  main {
+    java {
+      srcDirs = [] // don't compile Java code twice
+    }
+    groovy {
+      srcDirs = [ 'src/main/groovy', 'src/main/java' ]
+    }
+  }
+}
 
 pluginBundle {
   website = 'https://github.com/jongyoul/gradle-docker-plugin'

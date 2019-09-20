@@ -1,24 +1,29 @@
 package net.madeng.docker;
 
+import static net.madeng.docker.TypeUtil.makeString;
+import static net.madeng.docker.TypeUtil.makeStringMap;
+
+import groovy.lang.GString;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ContainerExtension {
-  private String image;
-  private String name;
-  private Map<String, String> envs;
-  private Map<String, String> ports;
-  private Map<String, String> volumes;
+  private Object image;
+  private Object name;
+  private Map<Object, Object> envs;
+  private Map<Object, Object> ports;
+  private Map<Object, Object> volumes;
 
   public String getImage() {
-    return image;
+    return makeString(image);
   }
 
-  public void setImage(String image) {
+  public void setImage(Object image) {
     this.image = image;
   }
 
   public String getName() {
-    return name;
+    return makeString(name);
   }
 
   public void setName(String name) {
@@ -26,28 +31,30 @@ public class ContainerExtension {
   }
 
   public Map<String, String> getEnvs() {
-    return envs;
+    return makeStringMap(envs);
   }
 
-  public void setEnvs(Map<String, String> envs) {
+  public void setEnvs(Map<Object, Object> envs) {
     this.envs = envs;
   }
 
   public Map<String, String> getPorts() {
-    return ports;
+    return makeStringMap(ports);
   }
 
-  public void setPorts(Map<String, String> ports) {
+  public void setPorts(Map<Object, Object> ports) {
     this.ports = ports;
   }
 
   public Map<String, String> getVolumes() {
-    return volumes;
+    return makeStringMap(volumes);
   }
 
-  public void setVolumes(Map<String, String> volumes) {
+  public void setVolumes(Map<Object, Object> volumes) {
     this.volumes = volumes;
   }
+
+
 
   @Override
   public String toString() {

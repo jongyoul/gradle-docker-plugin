@@ -181,4 +181,35 @@ class DockerPluginSingleTest extends DockerPluginTestSpecification {
     Files.exists(Paths.get(tempDir, 'foo'))
   }
 
+  def 'Handle GStringImpl'() {
+    given:
+    settingsFile << baseSettingScript
+    buildFile << baseBuildScript
+    buildFile << """
+        container {
+          image = 'nginx:latest'
+          name = 'nginx-test'
+          ports (
+            '80': '10080',
+            '443': '10443'
+          )
+          volumes (
+            "\${projectDir}/sql" : '/sql'
+          )
+        }
+    """
+
+    when:
+    def before = null == dockerClient.getContainer('nginx-test')
+    def result = GradleRunner.create()
+        .withProjectDir(testProjectDir.root)
+        .withPluginClasspath(pluginClasspath)
+        .withArguments(DockerPlugin.START_DOCKER_CONTAINER_TASK_NAME)
+        .build()
+    def after = null != dockerClient.getContainer('nginx-test')
+
+    then:
+    before && after
+  }
+
 }

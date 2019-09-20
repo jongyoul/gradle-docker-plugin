@@ -1,17 +1,19 @@
 package net.madeng.docker;
 
+import static net.madeng.docker.TypeUtil.makeString;
+
 import com.github.dockerjava.core.DefaultDockerClientConfig;
 import com.github.dockerjava.core.DockerClientConfig;
 import com.github.dockerjava.core.SSLConfig;
 
 public class DockerExtension {
-  private String dockerHost;
-  private String registryUsername;
-  private String registryPassword;
-  private String registryEmail;
-  private String registryUrl;
-  private String dockerConfigPath;
-  private String apiVersion;
+  private Object dockerHost;
+  private Object registryUsername;
+  private Object registryPassword;
+  private Object registryEmail;
+  private Object registryUrl;
+  private Object dockerConfigPath;
+  private Object apiVersion;
   SSLConfig sslConfig;
 
   DockerClientConfig toDockerClientConfig() {
@@ -19,25 +21,25 @@ public class DockerExtension {
         DefaultDockerClientConfig.createDefaultConfigBuilder();
 
     if (null != dockerHost) {
-      builder.withDockerHost(dockerHost);
+      builder.withDockerHost(getDockerHost());
     }
     if (null != registryUsername) {
-      builder.withRegistryUsername(registryUsername);
+      builder.withRegistryUsername(getRegistryUsername());
     }
     if (null != registryPassword) {
-      builder.withRegistryPassword(registryPassword);
+      builder.withRegistryPassword(getRegistryPassword());
     }
     if (null != registryEmail) {
-      builder.withRegistryEmail(registryEmail);
+      builder.withRegistryEmail(getRegistryEmail());
     }
     if (null != registryUrl) {
-      builder.withRegistryUrl(registryUrl);
+      builder.withRegistryUrl(getRegistryUrl());
     }
     if (null != dockerConfigPath) {
-      builder.withDockerConfig(dockerConfigPath);
+      builder.withDockerConfig(getDockerConfigPath());
     }
     if (null != apiVersion) {
-      builder.withApiVersion(apiVersion);
+      builder.withApiVersion(getApiVersion());
     }
     if (null != sslConfig) {
       builder.withCustomSslConfig(sslConfig);
@@ -46,58 +48,58 @@ public class DockerExtension {
   }
 
   public String getDockerHost() {
-    return dockerHost;
+    return makeString(dockerHost);
   }
 
-  public void setDockerHost(String dockerHost) {
+  public void setDockerHost(Object dockerHost) {
     this.dockerHost = dockerHost;
   }
 
   public String getRegistryUsername() {
-    return registryUsername;
+    return makeString(registryUsername);
   }
 
-  public void setRegistryUsername(String registryUsername) {
+  public void setRegistryUsername(Object registryUsername) {
     this.registryUsername = registryUsername;
   }
 
   public String getRegistryPassword() {
-    return registryPassword;
+    return makeString(registryPassword);
   }
 
-  public void setRegistryPassword(String registryPassword) {
+  public void setRegistryPassword(Object registryPassword) {
     this.registryPassword = registryPassword;
   }
 
   public String getRegistryEmail() {
-    return registryEmail;
+    return makeString(registryEmail);
   }
 
-  public void setRegistryEmail(String registryEmail) {
+  public void setRegistryEmail(Object registryEmail) {
     this.registryEmail = registryEmail;
   }
 
   public String getRegistryUrl() {
-    return registryUrl;
+    return makeString(registryUrl);
   }
 
-  public void setRegistryUrl(String registryUrl) {
+  public void setRegistryUrl(Object registryUrl) {
     this.registryUrl = registryUrl;
   }
 
   public String getDockerConfigPath() {
-    return dockerConfigPath;
+    return makeString(dockerConfigPath);
   }
 
-  public void setDockerConfigPath(String dockerConfigPath) {
+  public void setDockerConfigPath(Object dockerConfigPath) {
     this.dockerConfigPath = dockerConfigPath;
   }
 
   public String getApiVersion() {
-    return apiVersion;
+    return makeString(apiVersion);
   }
 
-  public void setApiVersion(String apiVersion) {
+  public void setApiVersion(Object apiVersion) {
     this.apiVersion = apiVersion;
   }
 
