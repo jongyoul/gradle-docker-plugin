@@ -17,17 +17,6 @@ version '0.5-SNAPSHOT'
 
 sourceCompatibility = 1.8
 
-sourceSets {
-  main {
-    java {
-      srcDirs = [] // don't compile Java code twice
-    }
-    groovy {
-      srcDirs = [ 'src/main/groovy', 'src/main/java' ]
-    }
-  }
-}
-
 pluginBundle {
   website = 'https://github.com/jongyoul/gradle-docker-plugin'
   vcsUrl = 'https://github.com/jongyoul/gradle-docker-plugin'
